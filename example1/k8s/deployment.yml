@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: helloWorld
+  name: helloWorld
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      run: helloWorld
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: helloWorld
+    spec:
+      containers:
+      - image: gcr.io/mindoktor-dev/helloWorld:v0.5
+        imagePullPolicy: IfNotPresent
+        name: helloWorld
+        ports:
+        - containerPort: 4000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

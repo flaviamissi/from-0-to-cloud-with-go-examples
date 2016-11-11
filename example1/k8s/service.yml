@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: helloWorld
+  name: helloWorld
+  namespace: default
+spec:
+  ports:
+  - nodePort: 32054
+    port: 4000
+    protocol: TCP
+    targetPort: 4000
+  selector:
+    run: helloWorld
+  sessionAffinity: None
+  type: LoadBalancer

@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: 2016-11-04T12:18:20Z
+  labels:
+    run: influxdb
+  name: influxdb
+  namespace: default
+  resourceVersion: "5177819"
+  selfLink: /api/v1/namespaces/default/services/influxdb
+  uid: c5fb3d1e-a288-11e6-a318-42010a8400c6
+spec:
+  clusterIP: 10.223.252.218
+  ports:
+  - name: port-1
+    nodePort: 30103
+    port: 8086
+    protocol: TCP
+    targetPort: 8086
+  - name: port-2
+    nodePort: 32484
+    port: 8083
+    protocol: TCP
+    targetPort: 8083
+  selector:
+    run: influxdb
+  sessionAffinity: None
+  type: LoadBalancer
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: 2016-11-04T12:14:59Z
+  generation: 2
+  labels:
+    run: influxdb
+  name: influxdb
+  namespace: default
+  resourceVersion: "5177556"
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/influxdb
+  uid: 4e883130-a288-11e6-a318-42010a8400c6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: influxdb
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: influxdb
+    spec:
+      containers:
+      - image: tutum/influxdb
+        imagePullPolicy: Always
+        name: influxdb
+        ports:
+        - containerPort: 8086
+          protocol: TCP
+        - containerPort: 8083
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
